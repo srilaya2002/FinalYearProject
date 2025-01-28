@@ -1,0 +1,59 @@
+/* OTP Verification Page Styles */
+.otp-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.otp-container h2 {
+    margin-bottom: 20px;
+    color: #ff9800; /* Orange for differentiation */
+    font-size: 24px;
+}
+
+.otp-container p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.otp-container form input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: #fffbea; /* Subtle yellow background for OTP field */
+}
+
+.otp-container form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #ff9800; /* Orange button */
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.otp-container form button:hover {
+    background-color: #e68900;
+}
+
+.otp-container .message {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #333;
+}
+
+.otp-container .message.error {
+    color: red;
+}
