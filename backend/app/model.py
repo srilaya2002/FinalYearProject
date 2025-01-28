@@ -54,3 +54,13 @@ class AdjustDietPlanRequest(BaseModel):
 class ChatRequest(BaseModel):
     message: str
     adjustments: Optional[str] = None
+
+class CurrentMealResponse(BaseModel):
+    message: str
+    source: str
+
+class ChatResponse(BaseModel):
+    message: str
+    data: dict = None
+    source: str
+    full_message: str = None

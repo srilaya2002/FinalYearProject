@@ -20,6 +20,7 @@ app.add_middleware(
 )
 
 app.include_router(chat_router)
+
 app.include_router(nutrition_router, prefix="/api/v1")
 # Include routers
 app.include_router(signup_router, prefix="/auth", tags=["Auth"])

@@ -7,6 +7,8 @@ import {
     MessageInput,
 } from '@chatscope/chat-ui-kit-react';
 import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
+import ChatMessage from './chatMessage'; // Adjust the path to where you saved ChatMessage.js
+
 import { fetchWithAuth } from '../utils/apiHelper';
 
 const Chat = () => {
@@ -196,18 +198,11 @@ const Chat = () => {
         <div style={{ position: "relative", height: "500px" }}>
             <MainContainer>
                 <ChatContainer>
-                    <MessageList>
+                     <MessageList>
                         {messages.map((msg, index) => (
-                            <Message key={index} model={msg}>
-                            {msg.source && (
-                                <div style={{ fontSize: "0.8em", color: "gray" }}>
-                                    <i>Source: {msg.source}</i>
-                                </div>
-                            )}
-                        </Message>
-                        
-                        ))}
-                    </MessageList>
+                            <ChatMessage key={index} botMessage={msg} />
+                            ))}
+                            </MessageList>
                     <MessageInput
                         value={input}
                         onChange={(value) => setInput(value)}
