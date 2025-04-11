@@ -1,0 +1,200 @@
+{
+  "week": {
+    "monday": {
+      "meals": [
+        {
+          "title": "Peanut Butter Muffins",
+          "readyInMinutes": 28,
+          "servings": 12,
+          "sourceUrl": "https://www.pinkwhen.com/peanut-butter-muffins/"
+        },
+        {
+          "title": "Instant Pot Black Bean Nachos",
+          "readyInMinutes": 15,
+          "servings": 4,
+          "sourceUrl": "https://www.pinkwhen.com/instant-pot-black-bean-nachos/"
+        },
+        {
+          "title": "Polenta gnocchi with savoy cabbage and cheese",
+          "readyInMinutes": 45,
+          "servings": 2,
+          "sourceUrl": "http://www.foodista.com/recipe/WWSDXGJH/polenta-gnocchi-with-savoy-cabbage-and-cheese"
+        }
+      ],
+      "nutrients": {
+        "calories": 879.93,
+        "protein": 39.51,
+        "carbohydrates": 98.75,
+        "fat": 39.7
+      }
+    },
+    "tuesday": {
+      "meals": [
+        {
+          "title": "French Inspired Poblano Crepe \u2018Enchiladas\u2019",
+          "readyInMinutes": 45,
+          "servings": 4,
+          "sourceUrl": "https://www.foodista.com/recipe/PNHN4SPB/french-inspired-poblano-crepe-enchiladas"
+        },
+        {
+          "title": "Colorful Wild Rice Salad",
+          "readyInMinutes": 30,
+          "servings": 3,
+          "sourceUrl": "https://www.foodista.com/recipe/RRSS27DD/colorful-wild-rice-salad"
+        },
+        {
+          "title": "Indian Spiced Red Lentil Soup",
+          "readyInMinutes": 45,
+          "servings": 12,
+          "sourceUrl": "https://www.foodista.com/recipe/N3PKYN5Q/indian-spiced-red-lentil-soup"
+        }
+      ],
+      "nutrients": {
+        "calories": 880.07,
+        "protein": 34.34,
+        "carbohydrates": 129.86,
+        "fat": 28.07
+      }
+    },
+    "wednesday": {
+      "meals": [
+        {
+          "title": "Tropical Breakfast Quinoa",
+          "readyInMinutes": 45,
+          "servings": 2,
+          "sourceUrl": "https://www.foodista.com/recipe/JLYYQCYC/tropical-breakfast-quinoa"
+        },
+        {
+          "title": "Greek Inspired Spring Omelet",
+          "readyInMinutes": 20,
+          "servings": 1,
+          "sourceUrl": "https://www.foodista.com/recipe/NCS56WWG/greek-inspired-spring-omelet"
+        },
+        {
+          "title": "Boiled Egg Curry",
+          "readyInMinutes": 45,
+          "servings": 2,
+          "sourceUrl": "https://www.foodista.com/recipe/64SQ5YPT/boiled-egg-curry"
+        }
+      ],
+      "nutrients": {
+        "calories": 880.03,
+        "protein": 34.86,
+        "carbohydrates": 64.59,
+        "fat": 55.32
+      }
+    },
+    "thursday": {
+      "meals": [
+        {
+          "title": "Never Fail Pumpkin Muffins",
+          "readyInMinutes": 45,
+          "servings": 12,
+          "sourceUrl": "https://www.foodista.com/recipe/F5FWZW28/never-fail-pumpkin-muffins"
+        },
+        {
+          "title": "Alton Brown's Baked Macaroni and Cheese",
+          "readyInMinutes": 20,
+          "servings": 8,
+          "sourceUrl": "https://www.foodista.com/recipe/WH8B2YQT/alton-browns-baked-macaroni-and-cheese"
+        },
+        {
+          "title": "Butternut Squash Soup with Fresh Goat Cheese",
+          "readyInMinutes": 45,
+          "servings": 6,
+          "sourceUrl": "https://www.foodista.com/recipe/WCCFJNLJ/butternut-squash-soup-with-fresh-goat-cheese"
+        }
+      ],
+      "nutrients": {
+        "calories": 879.93,
+        "protein": 35.09,
+        "carbohydrates": 82.36,
+        "fat": 46.97
+      }
+    },
+    "friday": {
+      "meals": [
+        {
+          "title": "Never Fail Pumpkin Muffins",
+          "readyInMinutes": 45,
+          "servings": 12,
+          "sourceUrl": "https://www.foodista.com/recipe/F5FWZW28/never-fail-pumpkin-muffins"
+        },
+        {
+          "title": "Alton Brown's Baked Macaroni and Cheese",
+          "readyInMinutes": 20,
+          "servings": 8,
+          "sourceUrl": "https://www.foodista.com/recipe/WH8B2YQT/alton-browns-baked-macaroni-and-cheese"
+        },
+        {
+          "title": "Butternut Squash Soup with Fresh Goat Cheese",
+          "readyInMinutes": 45,
+          "servings": 6,
+          "sourceUrl": "https://www.foodista.com/recipe/WCCFJNLJ/butternut-squash-soup-with-fresh-goat-cheese"
+        }
+      ],
+      "nutrients": {
+        "calories": 879.93,
+        "protein": 35.09,
+        "carbohydrates": 82.36,
+        "fat": 46.97
+      }
+    },
+    "saturday": {
+      "meals": [
+        {
+          "title": "Baby Blake\u2019s Oatmeal Breakfast Cookies",
+          "readyInMinutes": 45,
+          "servings": 32,
+          "sourceUrl": "https://www.foodista.com/recipe/Z73WNFKX/baby-blakes-oatmeal-breakfast-cookies"
+        },
+        {
+          "title": "Instant Pot Black Bean Nachos",
+          "readyInMinutes": 15,
+          "servings": 4,
+          "sourceUrl": "https://www.pinkwhen.com/instant-pot-black-bean-nachos/"
+        },
+        {
+          "title": "Ratatouille With Brie",
+          "readyInMinutes": 45,
+          "servings": 4,
+          "sourceUrl": "https://www.foodista.com/recipe/YKQ5H3TL/ratatouille-with-brie"
+        }
+      ],
+      "nutrients": {
+        "calories": 879.96,
+        "protein": 32.15,
+        "carbohydrates": 63.26,
+        "fat": 57.94
+      }
+    },
+    "sunday": {
+      "meals": [
+        {
+          "title": "Zomppa's Blueberry Muffins",
+          "readyInMinutes": 45,
+          "servings": 18,
+          "sourceUrl": "https://www.foodista.com/recipe/VHTQKZLG/zomppas-blueberry-muffins"
+        },
+        {
+          "title": "Chock Full Of Broccoli Soup",
+          "readyInMinutes": 30,
+          "servings": 4,
+          "sourceUrl": "https://www.foodista.com/recipe/MYJMGP67/chock-full-of-broccoli-soup"
+        },
+        {
+          "title": "Ratatouille With Brie",
+          "readyInMinutes": 45,
+          "servings": 4,
+          "sourceUrl": "https://www.foodista.com/recipe/YKQ5H3TL/ratatouille-with-brie"
+        }
+      ],
+      "nutrients": {
+        "calories": 879.93,
+        "protein": 35.5,
+        "carbohydrates": 71.22,
+        "fat": 55.53
+      }
+    }
+  }
+}

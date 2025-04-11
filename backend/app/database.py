@@ -1,18 +1,23 @@
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from psycopg2.pool import SimpleConnectionPool
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
 import os
 from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL")  # Ensure this is set in your .env file
+# ------------------ DATABASE URL ------------------
+DATABASE_URL = os.getenv("DATABASE_URL")  # Example: postgresql://user:pass@localhost:5432/nutrimate
 
-# Create a connection pool
+# ------------------ Psycopg2 Pool Setup ------------------
 pool = SimpleConnectionPool(
     minconn=1,
-    maxconn=10,
+    maxconn=50,
     dsn=DATABASE_URL,
 )
 
@@ -27,9 +32,10 @@ def release_db_connection(conn):
 def get_cursor():
     """Provide a cursor for each request."""
     conn = get_db_connection()
-    try:
-        cursor = conn.cursor(cursor_factory=RealDictCursor)
-        yield cursor
-    finally:
-        cursor.close()
-        release_db_connection(conn)
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+    return cursor, conn
+
+
+# ------------------ SQLAlchemy Setup (for table creation) ------------------
+engine = create_engine(DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

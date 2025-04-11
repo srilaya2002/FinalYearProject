@@ -10,7 +10,8 @@ import random
 router = APIRouter()
 
 @router.post("/signup")
-def signup(request: SignupRequest, cursor=Depends(get_cursor)):
+def signup(request: SignupRequest):
+    cursor, connection = get_cursor()
     """
     Signup endpoint that verifies matching passwords before sending OTP.
     """
@@ -49,17 +50,13 @@ def signup(request: SignupRequest, cursor=Depends(get_cursor)):
 
     return {"message": "OTP sent to email. Please verify to complete signup."}
 
-@router.post("/verify-otp")
-def verify_otp(request: OTPVerificationRequest, cursor=Depends(get_cursor)):
-    """
-    Endpoint to verify the OTP and complete user registration.
-    """
-    print(f"Start OTP verification for email: {request.email}")
+@router.post("/signup/verify-otp")
+def verify_signup_otp(request: OTPVerificationRequest):
+    cursor, connection = get_cursor()
 
-    # Fetch OTP and expiry from the database
+
     cursor.execute("SELECT otp, expiry FROM otps WHERE email = %s", (request.email,))
     otp_data = cursor.fetchone()
-    print(f"OTP data fetched from DB: {otp_data}")
 
     if not otp_data:
         raise HTTPException(status_code=400, detail="OTP not found or expired")
@@ -67,38 +64,24 @@ def verify_otp(request: OTPVerificationRequest, cursor=Depends(get_cursor)):
     stored_otp = otp_data["otp"]
     expiry = otp_data["expiry"]
 
-    # Convert expiry to an offset-aware datetime
-    if expiry.tzinfo is None:
-        expiry = expiry.replace(tzinfo=timezone.utc)
+    print("📨 Received OTP:", request.otp)
+    print("📦 Stored OTP in DB:", stored_otp)
+    print("⏰ Expiry Time:", expiry)
+    print("🔑 Password received for signup:", request.password)
 
-    now_utc = datetime.now(timezone.utc)
 
-    print(f"Stored OTP: {stored_otp}, Expiry: {expiry}")
-    print(f"Provided OTP: {request.otp}, Current Time: {now_utc}")
-
-    # Validate OTP and expiry
-    if stored_otp != request.otp:
-        print("OTP mismatch")
+    if stored_otp != request.otp or datetime.now() > expiry:
         raise HTTPException(status_code=400, detail="Invalid OTP")
 
-    if now_utc > expiry:
-        print("OTP expired")
-        raise HTTPException(status_code=400, detail="Expired OTP")
 
-    # OTP is valid; hash the password and insert user into the database
     hashed_password = bcrypt.hash(request.password)
-    cursor.execute(
-        """
-        INSERT INTO users (email, password)
-        VALUES (%s, %s)
-        """,
-        (request.email, hashed_password)
-    )
 
-    # Delete OTP entry after successful verification
+
+    cursor.execute("INSERT INTO users (email, password) VALUES (%s, %s)", (request.email, hashed_password))
+    connection.commit()
+
+
     cursor.execute("DELETE FROM otps WHERE email = %s", (request.email,))
-    conn = cursor.connection
-    conn.commit()
+    connection.commit()
 
-    print("OTP verification successful")
-    return {"message": "Account verified successfully."}
+    return {"message": "Account successfully verified and created."}

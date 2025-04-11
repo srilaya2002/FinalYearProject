@@ -1,4 +1,5 @@
 from datetime import datetime
+import re
 
 MEAL_PERIODS = {
     "Breakfast": range(5, 11),
@@ -8,19 +9,31 @@ MEAL_PERIODS = {
 
 
 def get_current_meal_from_diet_plan(diet_plan_content: str) -> str:
-    """
-    Fetch the current meal based on the time of day and diet plan content.
-    """
+
     current_day = datetime.now().strftime("%A")
     current_hour = datetime.now().hour
-    current_meal = next((meal for meal, hours in MEAL_PERIODS.items() if current_hour in hours), None)
+
+
+    current_meal = None
+    for meal, hours in MEAL_PERIODS.items():
+        if current_hour in hours:
+            current_meal = meal
+            break
+
 
     if not current_meal:
-        return "It's outside meal times! Please check your diet plan."
+        if current_hour < 5:
+            return "It's too early for meals! Breakfast starts at 5 AM."
+        elif 16 <= current_hour < 17:
+            return "It's between meals. Your next meal is dinner at 5 PM. Would you like suggestions for a snack?"
+        elif current_hour >= 22:
+            return "Dinner has ended. If you're hungry, try a light snack like fruit or yogurt."
+
 
     day_section = extract_day_section(diet_plan_content, current_day)
     if not day_section:
-        return f"Couldn't find details for {current_day} in your diet plan."
+        return f"Couldn't find meal details for {current_day}."
+
 
     meal_details = extract_meal_details(day_section, current_meal)
     if not meal_details:
@@ -28,28 +41,39 @@ def get_current_meal_from_diet_plan(diet_plan_content: str) -> str:
 
     return f"According to your diet plan, you should be eating: {meal_details}"
 
-
 def extract_day_section(diet_plan_content: str, current_day: str) -> str:
-    """
-    Extract the section of the diet plan for the given day.
-    """
-    day_start = diet_plan_content.lower().find(f"**{current_day.lower()}:**")
-    if day_start == -1:
+
+    day_pattern = re.compile(rf"\*\*{current_day}:\*\*", re.IGNORECASE)
+    match = day_pattern.search(diet_plan_content)
+
+    if not match:
         return None
 
-    next_day_start = diet_plan_content.find("**", day_start + 1)
-    return diet_plan_content[day_start:next_day_start].strip() if next_day_start != -1 else diet_plan_content[
-                                                                                            day_start:].strip()
+    start_index = match.end()
+    next_day_match = re.search(r"\*\*[A-Za-z]+:\*\*", diet_plan_content[start_index:])
 
+    if next_day_match:
+        end_index = start_index + next_day_match.start()
+        return diet_plan_content[start_index:end_index].strip()
+    else:
+        return diet_plan_content[start_index:].strip()
 
 def extract_meal_details(day_section: str, current_meal: str) -> str:
-    """
-    Extract meal details for the current meal from the day's section.
-    """
-    meal_start = day_section.lower().find(f"*{current_meal.lower()}:*")
-    if meal_start == -1:
-        return None
 
-    meal_end = day_section.find("\n", meal_start)
-    meal_details = day_section[meal_start:meal_end].strip() if meal_end != -1 else day_section[meal_start:].strip()
-    return meal_details.split(":", 1)[-1].strip()
+    meal_pattern = re.compile(rf"\*{current_meal}:\*\s*(.*)", re.IGNORECASE)
+    match = meal_pattern.search(day_section)
+
+    if match:
+        return match.group(1).strip()  # Extract meal details
+    return None
+
+def get_all_meals_for_today(diet_plan_content: str) -> str:
+
+    current_day = datetime.now().strftime("%A")
+
+    day_section = extract_day_section(diet_plan_content, current_day)
+    if not day_section:
+        return f"Couldn't find meal details for {current_day}."
+
+    return f"Here is your full meal plan for {current_day}:\n\n{day_section}"
+

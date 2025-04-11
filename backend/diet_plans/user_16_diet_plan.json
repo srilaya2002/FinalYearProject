@@ -1,0 +1,200 @@
+{
+  "week": {
+    "monday": {
+      "meals": [
+        {
+          "title": "Buckwheat Crepes",
+          "readyInMinutes": 45,
+          "servings": 1,
+          "sourceUrl": "https://www.foodista.com/recipe/MVWCZNGC/buckwheat-crepes"
+        },
+        {
+          "title": "Instant Pot Black Bean Nachos",
+          "readyInMinutes": 15,
+          "servings": 4,
+          "sourceUrl": "https://www.pinkwhen.com/instant-pot-black-bean-nachos/"
+        },
+        {
+          "title": "Jana\u2019s Homemade Mac and Cheese",
+          "readyInMinutes": 45,
+          "servings": 8,
+          "sourceUrl": "https://www.foodista.com/recipe/LQP3QPXR/jana-s-homemade-mac-and-cheese"
+        }
+      ],
+      "nutrients": {
+        "calories": 1203.04,
+        "protein": 54.98,
+        "carbohydrates": 142.11,
+        "fat": 49.09
+      }
+    },
+    "tuesday": {
+      "meals": [
+        {
+          "title": "Good Old Fashioned Pancakes",
+          "readyInMinutes": 16,
+          "servings": 6,
+          "sourceUrl": "https://maplewoodroad.com/good-old-fashioned-pancakes/"
+        },
+        {
+          "title": "Fig and Goat Cheese Pizza With Pesto",
+          "readyInMinutes": 15,
+          "servings": 6,
+          "sourceUrl": "https://www.foodista.com/recipe/KFX4GS4M/fig-and-goat-cheese-pizza-with-pesto"
+        },
+        {
+          "title": "Black Lentil and Couscous Salad",
+          "readyInMinutes": 45,
+          "servings": 8,
+          "sourceUrl": "https://www.foodista.com/recipe/VKD7BRLP/black-lentil-and-couscous-salad"
+        }
+      ],
+      "nutrients": {
+        "calories": 1203.06,
+        "protein": 39.71,
+        "carbohydrates": 143.55,
+        "fat": 52.38
+      }
+    },
+    "wednesday": {
+      "meals": [
+        {
+          "title": "Good Old Fashioned Pancakes",
+          "readyInMinutes": 16,
+          "servings": 6,
+          "sourceUrl": "https://maplewoodroad.com/good-old-fashioned-pancakes/"
+        },
+        {
+          "title": "Fig and Goat Cheese Pizza With Pesto",
+          "readyInMinutes": 15,
+          "servings": 6,
+          "sourceUrl": "https://www.foodista.com/recipe/KFX4GS4M/fig-and-goat-cheese-pizza-with-pesto"
+        },
+        {
+          "title": "Black Lentil and Couscous Salad",
+          "readyInMinutes": 45,
+          "servings": 8,
+          "sourceUrl": "https://www.foodista.com/recipe/VKD7BRLP/black-lentil-and-couscous-salad"
+        }
+      ],
+      "nutrients": {
+        "calories": 1203.06,
+        "protein": 39.71,
+        "carbohydrates": 143.55,
+        "fat": 52.38
+      }
+    },
+    "thursday": {
+      "meals": [
+        {
+          "title": "Peanut Butter And Chocolate Oatmeal",
+          "readyInMinutes": 45,
+          "servings": 1,
+          "sourceUrl": "https://www.foodista.com/recipe/JCCVHSNP/peanut-butter-and-chocolate-oatmeal"
+        },
+        {
+          "title": "Fresh Tomato Mozzarella Side Salad",
+          "readyInMinutes": 15,
+          "servings": 8,
+          "sourceUrl": "https://www.foodista.com/recipe/D2XV3M76/fresh-tomato-mozzarella-salad"
+        },
+        {
+          "title": "Couscous with fried vegetables",
+          "readyInMinutes": 30,
+          "servings": 1,
+          "sourceUrl": "http://spoonacular.com/-1380228522148"
+        }
+      ],
+      "nutrients": {
+        "calories": 1202.97,
+        "protein": 48.7,
+        "carbohydrates": 144.96,
+        "fat": 51.35
+      }
+    },
+    "friday": {
+      "meals": [
+        {
+          "title": "Gingerbread Pancakes",
+          "readyInMinutes": 45,
+          "servings": 16,
+          "sourceUrl": "http://www.foodista.com/recipe/G6HS2YYQ/gingerbread-pancakes"
+        },
+        {
+          "title": "Farfalle with fresh tomatoes, basil and mozzarella",
+          "readyInMinutes": 15,
+          "servings": 4,
+          "sourceUrl": "https://www.foodista.com/recipe/B6CC3QXM/farfalle-with-fresh-tomatoes-basil-and-mozzarella"
+        },
+        {
+          "title": "Warm Goat Cheese Salad",
+          "readyInMinutes": 45,
+          "servings": 2,
+          "sourceUrl": "https://www.foodista.com/recipe/78R2D43F/warm-goat-cheese-salad"
+        }
+      ],
+      "nutrients": {
+        "calories": 1203.03,
+        "protein": 33.52,
+        "carbohydrates": 129.99,
+        "fat": 62.75
+      }
+    },
+    "saturday": {
+      "meals": [
+        {
+          "title": "Baby Blake\u2019s Oatmeal Breakfast Cookies",
+          "readyInMinutes": 45,
+          "servings": 32,
+          "sourceUrl": "https://www.foodista.com/recipe/Z73WNFKX/baby-blakes-oatmeal-breakfast-cookies"
+        },
+        {
+          "title": "Alton Brown's Baked Macaroni and Cheese",
+          "readyInMinutes": 20,
+          "servings": 8,
+          "sourceUrl": "https://www.foodista.com/recipe/WH8B2YQT/alton-browns-baked-macaroni-and-cheese"
+        },
+        {
+          "title": "Black Bean and Cheese Stuffed Bell Peppers",
+          "readyInMinutes": 45,
+          "servings": 3,
+          "sourceUrl": "https://www.foodista.com/recipe/TGTLYH2Q/black-bean-and-cheese-stuffed-bell-peppers"
+        }
+      ],
+      "nutrients": {
+        "calories": 1202.96,
+        "protein": 49.07,
+        "carbohydrates": 140.58,
+        "fat": 59.02
+      }
+    },
+    "sunday": {
+      "meals": [
+        {
+          "title": "Baked Pumpkin Chocolate Chip Pancakes",
+          "readyInMinutes": 45,
+          "servings": 12,
+          "sourceUrl": "https://www.foodista.com/recipe/2WQNX3LQ/baked-pumpkin-chocolate-chip-pancakes"
+        },
+        {
+          "title": "Moroccan chickpea and lentil stew",
+          "readyInMinutes": 30,
+          "servings": 3,
+          "sourceUrl": "https://www.foodista.com/recipe/C6DXLHJH/moroccan-chickpea-and-lentil-stew"
+        },
+        {
+          "title": "Luscious Palak Paneer",
+          "readyInMinutes": 30,
+          "servings": 2,
+          "sourceUrl": "https://www.foodista.com/recipe/WKQQKG5K/luscious-palak-paneer"
+        }
+      ],
+      "nutrients": {
+        "calories": 1203.04,
+        "protein": 44.88,
+        "carbohydrates": 131.28,
+        "fat": 59.84
+      }
+    }
+  }
+}

@@ -1,29 +1,61 @@
-import requests
-import json
-from fastapi import HTTPException
-from app.utils.config import OPENAI_API_KEY
-
-OPENAI_HEADERS = {
-    "Content-Type": "application/json",
-    "Authorization": f"Bearer {OPENAI_API_KEY}",
-}
-
-def generate_diet_plan_with_openai(user_details, dietary_preferences):
-    """
-    Generate a personalized diet plan using OpenAI.
-    """
-    total_height_inches = user_details.height_feet * 12 + user_details.height_inches
-    prompt = f"""
-    I am a {user_details.age}-year-old {user_details.gender} with a height of {total_height_inches} inches and weight of {user_details.weight} kg. 
-    I follow a {dietary_preferences.diet_type} diet. I would like a weekly diet plan with {dietary_preferences.weekly_variety} unique meals. 
-    My budget is {dietary_preferences.budget}. Additionally, I dislike the following foods: {dietary_preferences.dislikes}.
-    Please generate a detailed personalized diet plan for me.
-    """
-    data = {"model": "gpt-4", "messages": [{"role": "user", "content": prompt}], "temperature": 0.7}
-
-    try:
-        response = requests.post("https://api.openai.com/v1/chat/completions", headers=OPENAI_HEADERS, data=json.dumps(data))
-        response.raise_for_status()
-        return response.json()["choices"][0]["message"]["content"]
-    except Exception as e:
-        raise HTTPException(status_code=500, detail="Error generating diet plan. Please try again.")
+# import requests
+# import json
+# import logging
+# from app.utils.config import OPENAI_API_KEY
+#
+# OPENAI_API_URL = "https://api.openai.com/v1/chat/completions"
+# OPENAI_HEADERS = {
+#     "Content-Type": "application/json",
+#     "Authorization": f"Bearer {OPENAI_API_KEY}",
+# }
+#
+#
+# def make_day_plan_user_friendly(day_plan, day_name):
+#     """
+#     Convert a raw day plan from Spoonacular to a user-friendly format using OpenAI.
+#     """
+#     prompt = f"""
+#     Convert this diet plan into a user-friendly format for {day_name}:
+#
+#     {json.dumps(day_plan, indent=2)}
+#
+#     Format the output as:
+#     **{day_name}:**
+#
+#     **Breakfast:**
+#     - [Meal 1]
+#     - [Meal 2]
+#
+#     **Lunch:**
+#     - [Meal 1]
+#     - [Meal 2]
+#
+#     **Dinner:**
+#     - [Meal 1]
+#     - [Meal 2]
+#
+#     **Snacks:**
+#     - [Snack 1]
+#     - [Snack 2]
+#     """
+#
+#     data = {
+#         "model": "gpt-4",
+#         "messages": [{"role": "user", "content": prompt}],
+#         "temperature": 0.7,
+#     }
+#
+#     try:
+#         response = requests.post(OPENAI_API_URL, headers=OPENAI_HEADERS, json=data, timeout=30)
+#         response.raise_for_status()
+#         api_response = response.json()
+#
+#         if "choices" in api_response and len(api_response["choices"]) > 0:
+#             return api_response["choices"][0]["message"]["content"].strip()
+#
+#         logging.error("Invalid response structure from OpenAI API.")
+#         return f"Could not generate a user-friendly diet plan for {day_name}."
+#
+#     except Exception as e:
+#         logging.error(f"Error generating user-friendly plan: {str(e)}")
+#         return f"Could not generate a user-friendly diet plan for {day_name}."

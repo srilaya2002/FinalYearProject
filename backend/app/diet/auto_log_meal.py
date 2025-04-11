@@ -1,94 +1,106 @@
 from fastapi import APIRouter, HTTPException, Depends
 from app.database import get_cursor
 from app.auth.utils import get_current_user
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 import os
 
 router = APIRouter()
 
+MEAL_TIME_RANGES = {
+    "breakfast": (5, 11),
+    "lunch": (11, 17),
+    "dinner": (17, 23)
+}
+
 @router.post("/auto-log-meals")
-async def auto_log_meals(user: dict = Depends(get_current_user), cursor=Depends(get_cursor)):
+async def auto_log_meals(user: dict = Depends(get_current_user)):
+    cursor, connection = get_cursor()
     try:
         user_id = user.get("id")
         if not user_id:
             raise HTTPException(status_code=401, detail="Unauthorized: Missing user ID in token")
 
-        # ✅ Make sure 'datetime' is used correctly
-        today = datetime.now().strftime("%A").lower()  # Get current day of the week in lowercase
-        today_date = datetime.now().date()
+        now = datetime.now()
+        current_hour = now.hour
+        today_date = now.date()
 
-        file_path = os.path.abspath(os.path.join("diet_plans", f"user_{user_id}_diet_plan.json"))
-        print(f"📂 Looking for diet plan file at: {file_path}")
+        cursor.execute("SELECT COALESCE(MAX(day), %s) AS last_logged_day FROM meal_log WHERE user_id = %s",
+                       (today_date - timedelta(days=7), user_id))
+        result = cursor.fetchone()
 
-        if not os.path.exists(file_path):
-            print(f"❌ File not found: {file_path}")
-            raise HTTPException(status_code=400, detail="Diet plan file not found.")
+        if isinstance(result, dict):
+            last_logged_day = result.get("last_logged_day", today_date - timedelta(days=7))
+        elif isinstance(result, (tuple, list)):
+            last_logged_day = result[0] if result[0] else today_date - timedelta(days=7)
+        else:
+            last_logged_day = today_date - timedelta(days=7)
 
-        with open(file_path, "r", encoding="utf-8") as file:
-            diet_plan = json.load(file)
+        check_date = last_logged_day + timedelta(days=1)
+        while check_date < today_date:
+            log_meals_for_day(user_id, check_date, cursor, check_duplicates=True)
+            check_date += timedelta(days=1)
 
-        print(f"Loaded diet plan content: {diet_plan}")
+        meals_to_log = [meal for meal, (start, _) in MEAL_TIME_RANGES.items() if current_hour >= start]
 
-        if isinstance(diet_plan, str):
-            diet_plan = json.loads(diet_plan)
+        log_meals_for_day(user_id, today_date, cursor, meals_to_log, check_duplicates=True)
 
-        if not isinstance(diet_plan, dict) or "week" not in diet_plan:
-            raise HTTPException(status_code=400, detail="Invalid diet plan format. 'week' key is missing.")
+        connection.commit()
+        cursor.close()
+        connection.close()
 
-        available_days = list(diet_plan['week'].keys())
-
-        if today not in available_days:
-            raise HTTPException(status_code=400, detail=f"No meals found for {today} in the diet plan.")
-
-        meals_for_today = diet_plan["week"][today].get("meals", [])
-        nutrients_for_today = diet_plan["week"][today].get("nutrients", {})
-
-        if not meals_for_today:
-            raise HTTPException(status_code=400, detail="No meals data available for today.")
-        if not isinstance(nutrients_for_today, dict) or not all(k in nutrients_for_today for k in ['calories', 'protein', 'fat', 'carbohydrates']):
-            raise HTTPException(status_code=400, detail="Invalid or missing nutrients data.")
-
-        total_calories = nutrients_for_today.get("calories", 0.0)
-        total_protein = nutrients_for_today.get("protein", 0.0)
-        total_carbs = nutrients_for_today.get("carbohydrates", 0.0)
-        total_fats = nutrients_for_today.get("fat", 0.0)
-
-        for index, meal in enumerate(meals_for_today):
-            meal_name = meal.get("title", "Unnamed Meal")
-            meal_type = ["breakfast", "lunch", "dinner"][index % 3]
-
-            # ✅ Ensure `meal_name` is not None
-            if not meal_name:
-                meal_name = "Unnamed Meal"
-
-            # Check if the meal already exists for the same day
-            cursor.execute("""
-                SELECT 1 FROM meal_log WHERE user_id = %s AND day = %s AND meal_name = %s
-            """, (user_id, today_date, meal_name))
-            exists = cursor.fetchone()
-
-            if exists:
-                print(f"🔍 Meal '{meal_name}' already exists for {today_date}. Skipping insert.")
-                continue
-
-            print(f"🍽️ Logging meal: {meal_name}, Type: {meal_type}, Calories: {total_calories}, Protein: {total_protein}, Carbs: {total_carbs}, Fats: {total_fats}")
-
-            cursor.execute("""
-                INSERT INTO meal_log (user_id, day, meal_type, meal_name, calories, protein, carbs, fats, created_at)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, NOW())
-            """, (
-                user_id, today_date, meal_type, meal_name,
-                total_calories, total_protein, total_carbs, total_fats
-            ))
-
-        cursor.connection.commit()
-
-        return {
-            "message": f"Meals for {today.capitalize()} logged automatically.",
-            "meals_logged": [meal.get("title", "Unnamed Meal") for meal in meals_for_today]
-        }
+        return {"message": f"Meals logged for missing days and today: {meals_to_log}"}
 
     except Exception as e:
-        print(f"❌ Error in automatic meal logging: {e}")
-        raise HTTPException(status_code=500, detail=f"Error in automatic meal logging: {str(e)}")
+        print(f"❌ Unexpected Error in automatic meal logging: {repr(e)}")
+        raise HTTPException(status_code=500, detail=f"Error in automatic meal logging: {repr(e)}")
+
+def log_meals_for_day(user_id, date, cursor, meals_to_log=None, check_duplicates=False):
+    today = date.strftime("%A").lower()
+    file_path = os.path.abspath(os.path.join("diet_plans", f"user_{user_id}_diet_plan.json"))
+
+    if not os.path.exists(file_path):
+        print(f"❌ Diet plan file not found for user {user_id}. Skipping {date}.")
+        return
+
+    with open(file_path, "r", encoding="utf-8") as file:
+        diet_plan = json.load(file)
+
+    if isinstance(diet_plan, str):
+        diet_plan = json.loads(diet_plan)
+
+    meals_for_today = diet_plan.get("week", {}).get(today, {}).get("meals", [])
+    nutrients_for_today = diet_plan.get("week", {}).get(today, {}).get("nutrients", {})
+
+    if not isinstance(meals_for_today, list) or not meals_for_today:
+        print(f"⚠️ No valid meals found for {today}. Skipping {date}.")
+        return
+
+    servings_per_meal = {meal.get("title", "Unnamed Meal"): meal.get("servings", 1) for meal in meals_for_today}
+
+    for index, meal in enumerate(meals_for_today):
+        meal_name = meal.get("title", "Unnamed Meal")
+        meal_type = ["breakfast", "lunch", "dinner"][index % 3]
+
+        if meals_to_log and meal_type not in meals_to_log:
+            continue
+
+        if check_duplicates:
+            cursor.execute("SELECT 1 FROM meal_log WHERE user_id = %s AND day = %s AND meal_type = %s",
+                           (user_id, date, meal_type))
+            if cursor.fetchone():
+                continue
+
+        num_servings = servings_per_meal.get(meal_name, 1)
+        print(f"📝 Logging meal: {meal_name} ({meal_type}), Servings: {num_servings}")
+
+        cursor.execute("""
+            INSERT INTO meal_log (user_id, day, meal_type, meal_name, servings, calories, protein, carbs, fats, created_at)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())
+        """, (
+            user_id, date, meal_type, meal_name, num_servings,
+            nutrients_for_today.get("calories", 0) / 3,
+            nutrients_for_today.get("protein", 0) / 3,
+            nutrients_for_today.get("carbohydrates", 0) / 3,
+            nutrients_for_today.get("fat", 0) / 3
+        ))
